@@ -4,12 +4,13 @@ let startTime = new Date()
 
 //define ball
 let ballRad = 5;
-let x = canvas.width/2;
-let y = canvas.height/2;
+let x = 20;
+let y = canvas.height - (ballRad*2) - 100;
 let inity = y;
 let ballVel = 0;
 let vel;
 let up = false;
+let grav = 7;
 
 var keymap ={
     "a": false,
@@ -28,6 +29,8 @@ function keyHandler(evt){
 }
 
 
+
+
 //Movement parameters
 function isLeft(){
     if (keymap["a"] && x - ballRad > 0){
@@ -41,11 +44,22 @@ function isRight(){
     }
 }
 
-function isReversed(grav){
-    if (keymap["s"]){
-        grav = -grav;
+
+function revGrav(){
+    grav = -grav;
+    if (grav<0 && dy < 1){
+        dy += 10
+    } else if (grav>0 && dy < 1){
+        dy -= 10
     }
+    // startTime = new Date();
 }
+// function isReversed(){
+//     if (keymap["s"]){
+//         grav = -grav;
+//         startTime = new Date();
+//     }
+// }
 
 function drawBall(){
     ctx.beginPath();
@@ -58,28 +72,36 @@ function drawBall(){
 function applyGravity(){
     //time will have to be the differences of dates
     let endTime = new Date();
-    let grav = 5;
     let timeDelta = (endTime - startTime)/1000;
-    isReversed(grav)
-    if(up){
-        vel = 0.99*vel;
-        dy =  -vel + 0.5*grav*timeDelta*timeDelta;
+    
+    if(!up && grav>0){        
         
-
-        // vel = (Math.sqrt(2*grav*(y-inity)));
-        // dy = -1//-vel*timeDelta + Math.sqrt(2*grav*(y-inity))
-    } else {
         dy =  0.5*grav*timeDelta*timeDelta;
         vel = dy/timeDelta;
-        // vel = (Math.sqrt(2*grav*(y-inity)));
-    }
+
+    } else if (up && grav>0) {
+
+        dy =  -vel + 0.5*grav*timeDelta*timeDelta;
     
+    } else if (up && grav < 0){
+
+        dy =  0.5*grav*timeDelta*timeDelta;
+        vel = dy/timeDelta;
+
+    } else if (!up && grav < 0){
+
+        dy =  -vel + 0.5*grav*timeDelta*timeDelta;
+
+    }
+
 
 }
 
 function bottomCollision(){
     if (y > canvas.height - (ballRad*2) - 100){
+        y = canvas.height - (ballRad*2) - 100;
         up = true;
+        vel *= 0.9
         startTime = new Date();
         
     }
@@ -87,23 +109,25 @@ function bottomCollision(){
 
 function topCollision(){
     if (y < (ballRad*2) + 100){
+        y = (ballRad*2) + 100;
         up = false;
-        startTime = new Date();
-        
+        vel *= 0.9
+        startTime = new Date(); 
     }
 }
 
-function bounceHeight(){
-    if(y >= canvas.height){
-        up = false;
-        startTime = new Date();
-    }
-}
+// function bounceHeight(){
+//     if(dy > 0 && up){
+//         up = false;
+//         startTime = new Date();
+//     }
+// }
 
 function moveBall(){
 
     isLeft()
     isRight()
+    // isReversed()
     y = y + dy;
 }
 
