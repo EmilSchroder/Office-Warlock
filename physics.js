@@ -10,7 +10,7 @@ let inity = y;
 let ballVel = 0;
 let vel;
 let up = false;
-let grav = 7;
+let grav = 5;
 
 var keymap ={
     "a": false,
@@ -47,6 +47,7 @@ function isRight(){
 
 function revGrav(){
     grav = -grav;
+    vel = -vel;
     if (grav<0 && dy < 1){
         dy += 10
     } else if (grav>0 && dy < 1){
@@ -101,7 +102,7 @@ function bottomCollision(){
     if (y > canvas.height - (ballRad*2) - 100){
         y = canvas.height - (ballRad*2) - 100;
         up = true;
-        vel *= 0.9
+        vel *= 0.8
         startTime = new Date();
         
     }
@@ -111,7 +112,7 @@ function topCollision(){
     if (y < (ballRad*2) + 100){
         y = (ballRad*2) + 100;
         up = false;
-        vel *= 0.9
+        vel *= 0.8
         startTime = new Date(); 
     }
 }
