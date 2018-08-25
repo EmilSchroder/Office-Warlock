@@ -7,6 +7,15 @@ let roof = canvas.height - 315;
 let lineThickness = 3;
 let curvature = 1;
 
+let spellSelect = {
+    antigrav: true,
+    create: false,
+    invis: false
+}
+
+let spellPosition = 0;
+let activeSpell = Object.keys(spellSelect)[spellPosition];
+
 
 let square = {
     sideLength: 10,
@@ -25,7 +34,9 @@ let ball = {
 
 var keymap ={
     "a": false,
-    "d": false
+    "d": false,
+    "w": false,
+    "s": false
 }
 
 //Listen for button pushes
@@ -35,6 +46,59 @@ document.addEventListener("keyup", keyHandler, false);
 //What happens when key pushed or released
 function keyHandler(evt){
     keymap[evt.key] = (evt.type == 'keydown');
+    spellChangeUp();
+    spellChangeDown();
+}
+
+function spellChangeUp(){
+    if (keymap["w"]){
+        spellPosition = (spellPosition+1)%3
+        console.log(spellPosition)
+    }
+}
+
+function spellChangeDown(){
+    if (keymap["s"]){
+        spellPosition = (spellPosition+2)%3
+        console.log(spellPosition)
+    }
+}
+
+canvas.addEventListener("click", castSpell)
+
+function castSpell(event){
+    switch(spellPosition){
+
+        case 0:
+        turnInvisible()
+        break;
+
+        case 1:
+        createBox(event)
+        break;
+
+        case 2:
+        revGrav()
+        break;
+
+        default:
+        console.log("switch statement failure");
+    }
+}
+
+function turnInvisible(){
+    ball.invisible = true;
+    console.log('invis');
+    timeLimit();
+}
+
+function createBox(event){
+    square.x = event.offsetX;
+    square.y = event.offsetY;
+    startTime = new Date();
+    console.log('box');
+
+    // draw();
 }
 
 function isLeft(){
@@ -70,10 +134,7 @@ function moveBall(){
     isRight()
 }
 
-function turnInvisible(){
-    ball.invisible = true;
-    timeLimit();
-}
+
 
 function timeLimit(){
     setTimeout(() => {
@@ -89,13 +150,7 @@ function drawBall(){
     }
 }
 
-canvas.addEventListener("click", (event) => {
-    square.x = event.offsetX;
-    square.y = event.offsetY;
-    startTime = new Date();
 
-    // draw();
-})
 
 function gravity(){
     let endTimeSquare = new Date();
@@ -174,6 +229,7 @@ function applyGravity(){
 
 function revGrav(){
     ball.grav *= -1
+    console.log('grav');
 }
 
 function draw(){
