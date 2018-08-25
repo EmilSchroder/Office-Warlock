@@ -3,6 +3,7 @@ var ctx = canvas.getContext("2d");
 let startTime = new Date()
 
 //define ball
+
 let ballRad = 5;
 let x = 20;
 let y = canvas.height - (ballRad*2) - 100;
