@@ -41,7 +41,7 @@ function isRight(){
     }
 }
 
-function drawBall(){
+function drawVisibleBall(){
     ctx.beginPath();
     ctx.arc(ball.x, ball.y, ball.rad, 0, Math.PI*2);
     ctx.fillStyle = "#0095DD";
@@ -73,18 +73,19 @@ function drawInvisibleBall(){
     ctx.closePath();
 }
 
+function drawBall(){
+    if (ball.invisible){
+        drawInvisibleBall();
+    } else {
+        drawVisibleBall();
+    }
+}
+
 function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     moveBall();
-
-    if (ball.invisible){
-        drawInvisibleBall();
-    } else {
-        drawBall();
-    }
-    
-    
+    drawBall();
 
     requestAnimationFrame(draw);
 }
