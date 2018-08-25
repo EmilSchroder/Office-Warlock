@@ -4,17 +4,19 @@
 <head>
     <meta charset="utf-8" />
     <title>Physics Setup</title>
-    <style>
-    	* { padding: 0; margin: 15px; }
-    	canvas { background: #eee; display: block; margin: 0 auto; }
-    </style>
+<link rel='stylesheet' type='text/css' href='main.css'>
 </head>
 <body>
-<button onclick="revGrav()">Gravity</button>
-<button onclick="turnInvisible()">Invisibility</button>
-<canvas id="myCanvas" width="1200" height="600"></canvas>
-
-<script src="combinedMech.js"></script>
-
+<div class='gameScreen'>
+    <div class='spellHolder'>
+        <div class='spell'>Invis</div>
+        <div class='spell'>Create</div>
+        <div class='spell'>Grav</div>
+    </div>
+    <div class='gameCanvas'>
+        <canvas id="myCanvas" width="1000" height="600"></canvas>
+    </div>
+    <script src="combinedMech.js"></script>
+</div>
 </body>
 </html>

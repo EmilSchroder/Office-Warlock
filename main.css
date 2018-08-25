@@ -1,0 +1,35 @@
+* {
+    padding: 0;
+    margin: 15px;
+}
+
+.gameScreen{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+}
+
+.gameCanvas{
+    display: flex;
+}
+
+canvas { 
+    background: #eee;
+}
+
+.spellHolder {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    width: 100px;
+}
+
+.spell{
+    display: flex;
+    border: 1px solid black;
+}
+
+/* .invis{
+    border-color: 
+} */

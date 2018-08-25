@@ -51,16 +51,18 @@ function keyHandler(evt){
 }
 
 function spellChangeUp(){
-    if (keymap["w"]){
+    if (keymap["s"]){
         spellPosition = (spellPosition+1)%3
-        console.log(spellPosition)
+        document.getElementsByClassName('spell')[spellPosition].style.border = '3px solid green'
+        document.getElementsByClassName('spell')[(spellPosition+2)%3].style.border = '1px solid black'
     }
 }
 
 function spellChangeDown(){
-    if (keymap["s"]){
+    if (keymap["w"]){
         spellPosition = (spellPosition+2)%3
-        console.log(spellPosition)
+        document.getElementsByClassName('spell')[spellPosition].style.border = '3px solid green'
+        document.getElementsByClassName('spell')[(spellPosition+1)%3].style.border = '1px solid black'
     }
 }
 
