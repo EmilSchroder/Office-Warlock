@@ -1,5 +1,7 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+
+
 let startTime = new Date()
 
 let floor = canvas.height - 115;
@@ -181,6 +183,23 @@ function roofCollision(){
         ball.falling = false;   
     }
 }
+/////////////////HANDLING NPC'S///////////////////////////
+let greg = new NPC("Greg", floor-10, 100, 0)
+console.log(greg);
+
+function NPC(name, x, y, move){
+    this.name = name;
+    this.x = x;
+    this.y = y;
+    this.height = 50;
+    this.width = 10;
+    this.move = move;
+}
+
+
+
+
+////////////////////////////////////////////////////////////
 
 
 function drawSquare(){
