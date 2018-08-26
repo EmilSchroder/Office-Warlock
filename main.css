@@ -30,6 +30,6 @@ canvas {
     border: 1px solid black;
 }
 
-/* .invis{
-    border-color: 
-} */
+.invis{
+    border: 3px solid green; 
+}

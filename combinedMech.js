@@ -5,6 +5,7 @@ var ctx = canvas.getContext("2d");
 let startTime = new Date()
 
 let floor = canvas.height - 115;
+let NPCfirstFloor = floor-50;
 let roof = canvas.height - 315;
 let lineThickness = 3;
 let curvature = 1;
@@ -31,7 +32,9 @@ let ball = {
     y: floor - 10,
     grav: 10,
     falling: false,
-    invisible: false
+    invisible: false,
+    direction: true,
+    speed: 5
 }
 
 var keymap ={
@@ -107,13 +110,15 @@ function createBox(event){
 
 function isLeft(){
     if (keymap["a"] && ball.x - ball.rad > 0){
-        ball.x -= 5;
+        ball.direction = false;
+        ball.x -= ball.speed;
     }
 }
 
 function isRight(){
     if (keymap["d"] && ball.x + ball.rad < canvas.width){
-        ball.x += 5;
+        ball.direction = true;
+        ball.x += ball.speed;
     }
 }
 
@@ -184,18 +189,89 @@ function roofCollision(){
     }
 }
 /////////////////HANDLING NPC'S///////////////////////////
-let greg = new NPC("Greg", floor-10, 100, 0)
-console.log(greg);
+let greg = new NPC("greg", NPCfirstFloor, 200)
+let sally = new NPC("sally", NPCfirstFloor, 500)
+let steve = new NPC("steve", NPCfirstFloor, 300)
+let mary = new NPC("mary", NPCfirstFloor, 400)
+let npcArr = [greg, sally, steve, mary]
 
-function NPC(name, x, y, move){
+
+function NPC(name, y, x, maxX, minX){
     this.name = name;
     this.x = x;
+    this.maxX = this.x + 50 + Math.random()*10;
+    this.minX = this.x - 50
     this.y = y;
     this.height = 50;
     this.width = 10;
-    this.move = move;
+    this.speed = 2;
+    this.direction = false;
 }
 
+function parambulate(npc, dir, x, v){
+
+    isWithinBounds(npc, dir, x)
+    return npcSpeed(npc, v)
+
+}
+
+function npcSpeed(npc, v){
+        if (npc.direction){
+        return v;
+    } else {
+        return -v
+    }
+}
+
+function isWithinBounds(npc, dir, x){
+    if(x > npc.maxX || x < npc.minX){
+        npc.direction = (!dir)
+    }
+}
+
+function moveNPC(arr){ 
+    arr.forEach(npc => {
+        npc.x += parambulate(npc, npc.direction, npc.x, npc.speed)
+    })
+}
+
+function NPCplayerCollision(arr){
+    arr.forEach(npc => {
+            if(ball.x >= npc.x && ball.x < npc.x+npc.width && ball.y >= npc.y){
+                if(ball.direction){
+                    ball.x -= ball.speed
+                } else {
+                    ball.x += ball.speed
+                }
+    }
+    })
+}
+
+function NPCboxCollision(arr){
+    // arr.forEach(npc => {
+    //     if(npc.x >= square.x && npc.x < square.x+square.sideLength){
+    //         npc.maxX = square.x - square.sideLength
+    //     } else {
+    //         npc.maxX = npc.minX + 50 + Math.random()*10;
+    //     }
+
+            
+    //     })
+}
+
+
+function drawNPC(){
+   
+    moveNPC(npcArr);
+    npcArr.forEach(npc => {
+        ctx.beginPath();    
+        ctx.rect(npc.x,npc.y,npc.width,npc.height);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.closePath();
+    })
+
+}
 
 
 
@@ -208,6 +284,9 @@ function drawSquare(){
     ctx.fillStyle = "red";
     ctx.fill();
     ctx.closePath();
+    setTimeout(() => {
+        ctx.clearRect(square.x-5,floor-50,square.sideLength,square.sideLength);
+    }, 1000)
 }
 
 function drawFloor(){
@@ -250,7 +329,9 @@ function applyGravity(){
 
 function revGrav(){
     ball.grav *= -1
-    console.log('grav');
+    setTimeout(()=>{
+        ball.grav *= -1
+    }, 1000)
 }
 
 function draw(){
@@ -259,9 +340,13 @@ function draw(){
     gravity();
     floorCollision();
     roofCollision();
+    NPCplayerCollision(npcArr);
+    NPCboxCollision(npcArr);
     gravityActing();
     moveBall();
-    
+
+
+    drawNPC();
     drawSquare();
     drawBall();
     drawRoof();
