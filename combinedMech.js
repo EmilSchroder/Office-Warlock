@@ -284,9 +284,6 @@ function drawSquare(){
     ctx.fillStyle = "red";
     ctx.fill();
     ctx.closePath();
-    setTimeout(() => {
-        ctx.clearRect(square.x-5,floor-50,square.sideLength,square.sideLength);
-    }, 1000)
 }
 
 function drawFloor(){
